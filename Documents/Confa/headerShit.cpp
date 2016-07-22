@@ -1,7 +1,11 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <iomanip>
 #include <stdlib.h>
+
+#include "Ip.cpp"
+#include "Solution1.cpp"
 
 void assert(bool rule, std::string message = "Not correct data.") {
 	if (rule == 0) {
@@ -12,30 +16,9 @@ void assert(bool rule, std::string message = "Not correct data.") {
 
 void wrongAns(bool rule, int l, int r) {
 	if (!rule)
-	std::cout << "Test = [" << l << "," << "]\n";
+	std::cout << "Test = [" << l << "," << r << "]\n";
 	assert(rule, "Wrong answer!");
 }
-
-struct IP
-{
-	int data[4];
-	IP() {
-		for (int i = 0; i < 4; i++)
-			data[i] = 0;
-	}
-
-	IP(std::string toParse) {
-		toParse = "." + toParse;
-		for (int i = 3; i >= 0; i--) {
-			int res = 0, st = 1;
-			while (toParse.back() != '.')
-				res += (toParse.back() - '0') * st, 
-					st *= 10, toParse.pop_back();
-			toParse.pop_back();
-			data[i] = res;
-		}
-	}
-};
 
 void Init(); // удалить весь мусор с прошлых тестов, приготовиться к этому
 int answerQuery(int l, int r); // K(l, r) 
@@ -46,7 +29,7 @@ double SolvePackage(std::string path, std::string answer_path) {
 	std::ifstream Input(path);
 	std::ifstream Answers(answer_path);
 
-	// Init();
+	Init();
 
 	std::ios_base::sync_with_stdio(0);
 
@@ -72,7 +55,7 @@ double SolvePackage(std::string path, std::string answer_path) {
 			assert(cntDots == 3);
 
 			IP duty_ip = IP(ipv4);
-			// pushBackQuery(duty_ip);
+			pushBackQuery(duty_ip);
 		} else {
 			int l, r;
 			int correct_answer;
@@ -89,6 +72,6 @@ double SolvePackage(std::string path, std::string answer_path) {
 
 int main() {
 	double used_time = SolvePackage("train.txt", "results.txt");
-	std::cout << (int) used_time;
+	std::cout << fixed << setprecision( 3 ) << used_time;
 	return 0;
 }
