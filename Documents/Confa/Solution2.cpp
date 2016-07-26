@@ -5,27 +5,15 @@
 using namespace std;
 
 vector<long long> Array;
+vector<vector<int> > dynProg;
 
 void Init() {
 	Array.clear();
+	dynProg.clear();
 }
-void assert(bool rule, bool kek) {
-	if (rule == 0) {
-		std::cout << "Not correct data.";
-		exit(226);
-	}
-}
+
 int answerQuery(int l, int r) {
-	assert(l <= r, 1);
-	assert(r < Array.size(), 1);
-	unordered_set<long long> used;
-	used.clear();
-
-	for (int i = l; i <= r; i++) {
-		used.insert(Array[i]);
-	}
-
-	return (int)used.size();
+	return dynProg[l][r];
 }
 
 void pushBackQuery(IP& ip) {
@@ -36,4 +24,14 @@ void pushBackQuery(IP& ip) {
 		res += (long long)ip.data[i] * st, st *= 1000LL;
 
 	Array.push_back(res);
+	
+	unordered_set<long long> used;
+	vector<int> curLayer(Array.size(), 0);
+
+	for (int i = Array.size() - 1; i >= 0; i--) {
+		used.insert(Array[i]);
+		curLayer[i] = used.size();
+	}
+
+	dynProg.push_back(curLayer);
 }

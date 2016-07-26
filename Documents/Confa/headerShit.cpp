@@ -5,7 +5,9 @@
 #include <stdlib.h>
 
 #include "Ip.cpp"
-#include "Solution1.cpp"
+#include "testgen/group5.cpp" // выбрать связку генератор + решение
+							  // к примеру #include "testgen/group1.cpp" + #include "Solution2.cpp"
+#include "Solution5.cpp"
 
 void assert(bool rule, std::string message = "Not correct data.") {
 	if (rule == 0) {
@@ -63,15 +65,25 @@ double SolvePackage(std::string path, std::string answer_path) {
 			Input >> l >> r;
 			Answers >> correct_answer;
 
-			wrongAns(answerQuery(l, r) == correct_answer, l, r);
+			answerQuery(l, r);
+			// wrongAns(answerQuery(l, r) == correct_answer, l, r);
 		}
 	}
 
 	return (double)(clock() - start) / CLOCKS_PER_SEC;
 }
 
+int sizeOfTest = 10; // выбрать размер теста
+
 int main() {
-	double used_time = SolvePackage("train.txt", "results.txt");
+	int testNum = 4; // выбрать колво тестов
+	double used_time = 0;
+
+	for (int i = 0; i < testNum; i++) {
+		genTest(sizeOfTest);
+		used_time += SolvePackage("input.txt", "output.txt");
+	}
+
 	std::cout << fixed << setprecision( 3 ) << used_time;
 	return 0;
 }
